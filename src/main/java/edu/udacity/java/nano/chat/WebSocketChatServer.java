@@ -27,8 +27,8 @@ public class WebSocketChatServer {
 
     private static void sendMessageToAll(String msg) throws IOException {
         //TODO: add send message method.
-        for(Session session : onlineSessions.values()){
-            session.getBasicRemote().sendText(msg);
+        for(Session s : onlineSessions.values()){
+            s.getBasicRemote().sendText(msg);
         }
     }
 
@@ -36,9 +36,9 @@ public class WebSocketChatServer {
      * Open connection, 1) add session, 2) add user.
      */
     @OnOpen
-    public void onOpen(Session session) throws IOException {
+    public void onOpen(Session s) throws IOException {
         //TODO: add on open connection.
-        onlineSessions.put(session.getId(), session);
+        onlineSessions.put(s.getId(), s);
         Message message = new Message(null, null, onlineSessions.size(), "ENTER");
         sendMessageToAll(JSON.toJSONString(message));
     }
@@ -58,10 +58,10 @@ public class WebSocketChatServer {
      * Close connection, 1) remove session, 2) update user.
      */
     @OnClose
-    public void onClose(Session session) throws IOException {
+    public void onClose(Session s) throws IOException {
         //TODO: add close connection.
-        onlineSessions.remove(session.getId());
-        session.close();
+        onlineSessions.remove(s.getId());
+        s.close();
     }
 
     /**

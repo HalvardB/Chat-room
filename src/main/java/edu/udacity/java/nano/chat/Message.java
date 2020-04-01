@@ -15,7 +15,7 @@ public class Message {
     private String message;
 
     @JSONField(name = "onlineCount")
-    private int onlineCount = 0;
+    private int onlineCount;
 
     @JSONField(name = "type")
     private String type = "SPEAK";
