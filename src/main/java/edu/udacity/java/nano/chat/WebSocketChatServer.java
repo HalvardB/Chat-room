@@ -6,6 +6,9 @@ import org.springframework.stereotype.Component;
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -24,6 +27,7 @@ public class WebSocketChatServer {
      * All chat sessions.
      */
     private static Map<String, Session> onlineSessions = new ConcurrentHashMap<>();
+    private List<Message> allMessages = new ArrayList();
 
     private static void sendMessageToAll(String msg) throws IOException {
         //TODO: add send message method.
@@ -52,6 +56,7 @@ public class WebSocketChatServer {
         Message message = JSON.parseObject(jsonStr, Message.class);
         message.setOnlineCount(onlineSessions.values().size());
         sendMessageToAll(JSON.toJSONString(message));
+        allMessages.add(message);
     }
 
     /**
@@ -72,4 +77,12 @@ public class WebSocketChatServer {
         error.printStackTrace();
     }
 
+
+    public static Map<String, Session> getOnlineSessions() {
+        return onlineSessions;
+    }
+
+    public int getAllMessageCount(){
+        return allMessages.size();
+    }
 }
